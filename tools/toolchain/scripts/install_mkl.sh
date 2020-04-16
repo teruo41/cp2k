@@ -66,37 +66,39 @@ if [ "$with_mkl" != "__DONTUSE__" ] ; then
         fi
     done
     # set the correct lib flags from  MLK link adviser
-    MKL_LIBS="-Wl,--start-group ${mkl_lib_dir}/libmkl_gf_lp64.a ${mkl_lib_dir}/libmkl_core.a ${mkl_lib_dir}/libmkl_sequential.a"
+    #MKL_LIBS="-Wl,--start-group ${mkl_lib_dir}/libmkl_gf_lp64.a ${mkl_lib_dir}/libmkl_core.a ${mkl_lib_dir}/libmkl_sequential.a"
+    MKL_LIBS="-L${mkl_lib_dir} -Wl,--no-as-needed -lmkl_scalapack_lp64 -lmkl_blacs_intelmpi_lp64 -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lpthread -lm -ldl"
     # check optional libraries
-    if [ $MPI_MODE != no ] ; then
+    #if [ $MPI_MODE != no ] ; then
         enable_mkl_scalapack="__TRUE__"
-        mkl_optional_libs="libmkl_scalapack_lp64.a"
-        case $MPI_MODE in
-            mpich)
-                mkl_blacs_lib="libmkl_blacs_intelmpi_lp64.a"
-                ;;
-            openmpi)
-                mkl_blacs_lib="libmkl_blacs_openmpi_lp64.a"
-                ;;
-            *)
-                enable_mkl_scalapack="__FALSE__"
-                ;;
-        esac
-        mkl_optional_libs="$mkl_optional_libs $mkl_blacs_lib"
-        for ii in $mkl_optional_libs ; do
-            if ! [ -f "${mkl_lib_dir}/${ii}" ] ; then
-                enable_mkl_scalapack="__FALSE__"
-            fi
-        done
-        if [ $enable_mkl_scalapack = "__TRUE__" ] ; then
-            echo "Using MKL provided ScaLAPACK and BLACS"
-            MKL_LIBS="${mkl_lib_dir}/libmkl_scalapack_lp64.a ${MKL_LIBS} ${mkl_lib_dir}/${mkl_blacs_lib}"
-        fi
-    else
-        echo "Not using MKL provided ScaLAPACK and BLACS"
-        enable_mkl_scalapack="__FALSE__"
-    fi
-    MKL_LIBS="${MKL_LIBS} -Wl,--end-group -lpthread -lm -ldl"
+    #    mkl_optional_libs="libmkl_scalapack_lp64.a"
+    #    case $MPI_MODE in
+    #        mpich)
+    #            mkl_blacs_lib="libmkl_blacs_intelmpi_lp64.a"
+    #            ;;
+    #        openmpi)
+    #            mkl_blacs_lib="libmkl_blacs_openmpi_lp64.a"
+    #            ;;
+    #        *)
+    #            enable_mkl_scalapack="__FALSE__"
+    #            ;;
+    #    esac
+    #    mkl_optional_libs="$mkl_optional_libs $mkl_blacs_lib"
+        mkl_optional_libs=""
+    #    for ii in $mkl_optional_libs ; do
+    #        if ! [ -f "${mkl_lib_dir}/${ii}" ] ; then
+    #            enable_mkl_scalapack="__FALSE__"
+    #        fi
+    #    done
+    #    if [ $enable_mkl_scalapack = "__TRUE__" ] ; then
+    #        echo "Using MKL provided ScaLAPACK and BLACS"
+    #        MKL_LIBS="${mkl_lib_dir}/libmkl_scalapack_lp64.a ${MKL_LIBS} ${mkl_lib_dir}/${mkl_blacs_lib}"
+    #    fi
+    #else
+    #    echo "Not using MKL provided ScaLAPACK and BLACS"
+    #    enable_mkl_scalapack="__FALSE__"
+    #fi
+    #MKL_LIBS="${MKL_LIBS} -Wl,--end-group -lpthread -lm -ldl"
     MKL_CFLAGS="${MKL_CFLAGS} -I${MKLROOT}/include -I${MKLROOT}/include/fftw"
 
     # write setup files

@@ -72,6 +72,8 @@ case "$with_libint" in
             #cmake --build . > cmake.log 2>&1
             #cmake --build . --target install > install.log 2>&1
 
+            sed -i -e "s/fortran_example check_test/libint_f.o check_test/" fortran/Makefile.in
+
             ./configure --prefix=${pkg_install_dir} \
                         --with-cxx="$CXX $LIBINT_CXXFLAGS" \
                         --with-cxx-optflags="$LIBINT_CXXFLAGS" \

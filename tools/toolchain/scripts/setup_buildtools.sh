@@ -19,12 +19,12 @@ done
 
 # setup compiler flags, leading to nice stack traces on crashes but
 # still optimised
-CFLAGS="-O2 -ftree-vectorize -g -fno-omit-frame-pointer -march=native $TSANFLAGS"
-FFLAGS="-O2 -ftree-vectorize -g -fno-omit-frame-pointer -march=native $TSANFLAGS"
-F77FLAGS="-O2 -ftree-vectorize -g -fno-omit-frame-pointer -march=native $TSANFLAGS"
-F90FLAGS="-O2 -ftree-vectorize -g -fno-omit-frame-pointer -march=native $TSANFLAGS"
-FCFLAGS="-O2 -ftree-vectorize -g -fno-omit-frame-pointer -march=native $TSANFLAGS"
-CXXFLAGS="-O2 -ftree-vectorize -g -fno-omit-frame-pointer -march=native $TSANFLAGS"
+CFLAGS="-O2 -g -fno-omit-frame-pointer -march=skylake $TSANFLAGS"
+FFLAGS="-O2 -g -fno-omit-frame-pointer -march=skylake $TSANFLAGS"
+F77FLAGS="-O2 -g -fno-omit-frame-pointer -march=skylake $TSANFLAGS"
+F90FLAGS="-O2 -g -fno-omit-frame-pointer -march=skylake $TSANFLAGS"
+FCFLAGS="-O2 -g -fno-omit-frame-pointer -march=skylake $TSANFLAGS"
+CXXFLAGS="-O2 -g -fno-omit-frame-pointer -march=skylake $TSANFLAGS"
 
 export CFLAGS=$(allowed_gcc_flags $CFLAGS)
 export FFLAGS=$(allowed_gfortran_flags $FFLAGS)

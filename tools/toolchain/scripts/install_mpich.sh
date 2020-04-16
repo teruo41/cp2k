@@ -50,14 +50,14 @@ case "$with_mpich" in
         ;;
     __SYSTEM__)
         echo "==================== Finding MPICH from system paths ===================="
-        check_command mpirun "mpich"
-        check_command mpicc "mpich"
-        check_command mpif90 "mpich"
-        check_command mpic++ "mpich"
-        check_lib -lmpi "mpich"
-        check_lib -lmpicxx "mpich"
-        add_include_from_paths MPICH_CFLAGS "mpi.h" $INCLUDE_PATHS
-        add_lib_from_paths MPICH_LDFLAGS "libmpi.*" $LIB_PATHS
+        #check_command mpirun "mpich"
+        #check_command mpicc "mpich"
+        #check_command mpif90 "mpich"
+        #check_command mpic++ "mpich"
+        #check_lib -lmpi "mpich"
+        #check_lib -lmpicxx "mpich"
+        #add_include_from_paths MPICH_CFLAGS "mpi.h" $INCLUDE_PATHS
+        #add_lib_from_paths MPICH_LDFLAGS "libmpi.*" $LIB_PATHS
         ;;
     __DONTUSE__)
         ;;
@@ -87,15 +87,17 @@ EOF
         mpi_bin=mpirun
     fi
     # check MPICH version, versions less than 3.0 will get -D__MPI_VERSION=2 flag
-    raw_version=$($mpi_bin --version | \
-                      grep "Version:" | awk '{print $2}')
-    major_version=$(echo $raw_version | cut -d '.' -f 1)
-    minor_version=$(echo $raw_version | cut -d '.' -f 2)
-    if [ $major_version -lt 3 ] ; then
-        mpi2_dflags="-D__MPI_VERSION=2"
-    else
+    #raw_version=$($mpi_bin --version | \
+    #                  grep "Version:" | awk '{print $2}')
+    #major_version=$(echo $raw_version | cut -d '.' -f 1)
+    #minor_version=$(echo $raw_version | cut -d '.' -f 2)
+    #if [ $major_version -lt 3 ] ; then
+    #    mpi2_dflags="-D__MPI_VERSION=2"
+    #else
         mpi2_dflags=''
-    fi
+    #fi
+    MPICH_CFLAGS="-I${I_MPI_ROOT}/include64"
+    MPICH_LDFLAGS="-L${I_MPI_ROOT}/lib64 -Wl,-rpath=${I_MPI_ROOT}/lib64"
     cat <<EOF >> "${BUILDDIR}/setup_mpich"
 export MPI_MODE="${MPI_MODE}"
 export MPICH_CFLAGS="${MPICH_CFLAGS}"

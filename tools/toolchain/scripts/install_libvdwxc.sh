@@ -65,7 +65,7 @@ case "$with_libvdwxc" in
             unset MPICC MPICXX MPIF90 MPIFC MPIF77
             if [ "$MPI_MODE" = "no" ]; then
                 # compile libvdwxc without mpi support since fftw (or mkl) do not have mpi support activated
-                ./configure \
+                CC=${CC} FC=${FC} ./configure \
                     --prefix="${pkg_install_dir}" \
                     --libdir="${pkg_install_dir}/lib" \
                     --with-fftw3=${FFTW_ROOT} \
@@ -73,12 +73,11 @@ case "$with_libvdwxc" in
                     --without-mpi \
                     >> configure.log 2>&1
             else
-                CC=mpicc FC=mpifort ./configure \
+                MPICC=mpiicc MPIFC=mpiifort ./configure \
                     --prefix="${pkg_install_dir}" \
                     --libdir="${pkg_install_dir}/lib" \
                     --with-fftw3=${FFTW_ROOT} \
                     --disable-shared \
-                    --with-mpi \
                     >> configure.log 2>&1
             fi
             make -j $NPROCS > compile.log 2>&1

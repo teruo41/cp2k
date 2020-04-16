@@ -40,7 +40,7 @@ case "$with_plumed" in
 
             echo "Installing from scratch into ${pkg_install_dir}"
             cd plumed-${plumed_ver}
-            ./configure CXX="${MPICXX}" --prefix=${pkg_install_dir} --libdir="${pkg_install_dir}/lib" > configure.log 2>&1
+            ./configure CXX="${MPICXX}" --prefix=${pkg_install_dir} --libdir="${pkg_install_dir}/lib" CXXFLAGS="-I${GSLROOT}/include" LIBS="-L${GSLROOT}/lib -L${MKLROOT}/lib/intel64 -Wl,--no-as-needed -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lpthread -lm -ldl" > configure.log 2>&1
             make -j $NPROCS > make.log 2>&1
             make install > install.log 2>&1
             write_checksums "${install_lock_file}" "${SCRIPT_DIR}/$(basename ${SCRIPT_NAME})"
@@ -63,7 +63,7 @@ case "$with_plumed" in
 esac
 
 if [ "$with_plumed" != "__DONTUSE__" ] ; then
-    PLUMED_LIBS='-lplumed -ldl -lstdc++ -lz -ldl'
+    PLUMED_LIBS='-lplumedKernel -lplumed -ldl -lstdc++ -lz -ldl'
     if [ "$with_plumed" != "__SYSTEM__" ] ; then
         cat <<EOF > "${BUILDDIR}/setup_plumed"
 prepend_path LD_LIBRARY_PATH "$pkg_install_dir/lib"
