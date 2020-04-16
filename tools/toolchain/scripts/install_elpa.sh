@@ -67,18 +67,18 @@ case "$with_elpa" in
             fi
             # ELPA-2017xxxx enables AVX2 by default, switch off if machine doesn't support it.
             has_AVX=`grep '\bavx\b' /proc/cpuinfo 1>/dev/null && echo 'yes' || echo 'no'`
-            [ "${has_AVX}" == "yes" ] && AVX_flag="-mavx" || AVX_flag=""
+            #[ "${has_AVX}" == "yes" ] && AVX_flag="-mavx" || AVX_flag=""
             has_AVX2=`grep '\bavx2\b' /proc/cpuinfo 1>/dev/null && echo 'yes' || echo 'no'`
-            [ "${has_AVX2}" == "yes" ] && AVX_flag="-mavx2"
+            #[ "${has_AVX2}" == "yes" ] && AVX_flag="-mavx2"
             has_AVX512=`grep '\bavx512f\b' /proc/cpuinfo 1>/dev/null && echo 'yes' || echo 'no'`
-            [ "${has_AVX512}" == "yes" ] && AVX512_flags="-mavx512f"
+            #[ "${has_AVX512}" == "yes" ] && AVX512_flags="-mavx512f"
             has_GPU=$([ "$ENABLE_CUDA" == "__TRUE__" ] && echo "yes" || echo "no")
-            FMA_flag=`grep '\bfma\b' /proc/cpuinfo 1>/dev/null && echo '-mfma' || echo '-mno-fma'`
-            SSE4_flag=`grep '\bsse4_1\b' /proc/cpuinfo 1>/dev/null && echo '-msse4' || echo '-mno-sse4'`
-            grep '\bavx512dq\b' /proc/cpuinfo 1>/dev/null && AVX512_flags+=" -mavx512dq"
-            grep '\bavx512cd\b' /proc/cpuinfo 1>/dev/null && AVX512_flags+=" -mavx512cd"
-            grep '\bavx512bw\b' /proc/cpuinfo 1>/dev/null && AVX512_flags+=" -mavx512bw"
-            grep '\bavx512v1\b' /proc/cpuinfo 1>/dev/null && AVX512_flags+=" -mavx512v1"
+            #FMA_flag=`grep '\bfma\b' /proc/cpuinfo 1>/dev/null && echo '-mfma' || echo '-mno-fma'`
+            #SSE4_flag=`grep '\bsse4_1\b' /proc/cpuinfo 1>/dev/null && echo '-msse4' || echo '-mno-sse4'`
+            #grep '\bavx512dq\b' /proc/cpuinfo 1>/dev/null && AVX512_flags+=" -mavx512dq"
+            #grep '\bavx512cd\b' /proc/cpuinfo 1>/dev/null && AVX512_flags+=" -mavx512cd"
+            #grep '\bavx512bw\b' /proc/cpuinfo 1>/dev/null && AVX512_flags+=" -mavx512bw"
+            #grep '\bavx512v1\b' /proc/cpuinfo 1>/dev/null && AVX512_flags+=" -mavx512v1"
             # non-threaded version
             mkdir -p obj_no_thread; cd obj_no_thread
             ../configure  --prefix="${pkg_install_dir}" \
@@ -94,7 +94,7 @@ case "$with_elpa" in
                           FC=${MPIFC} \
                           CC=${MPICC} \
                           CXX=${MPICXX} \
-                          FCFLAGS="${FCFLAGS} ${MATH_CFLAGS} ${SCALAPACK_CFLAGS} -ffree-line-length-none ${AVX_flag} ${FMA_flag} ${SSE4_flag} ${AVX512_flags}" \
+                          FCFLAGS="${FCFLAGS} ${MATH_CFLAGS} ${SCALAPACK_CFLAGS} ${AVX_flag} ${FMA_flag} ${SSE4_flag} ${AVX512_flags}" \
                           CFLAGS="${CFLAGS} ${MATH_CFLAGS} ${SCALAPACK_CFLAGS} ${AVX_flag} ${FMA_flag} ${SSE4_flag} ${AVX512_flags}" \
                           CXXFLAGS="${CXXFLAGS} ${MATH_CFLAGS} ${SCALAPACK_CFLAGS} ${AVX_flag} ${FMA_flag} ${SSE4_flag} ${AVX512_flags}" \
                           LDFLAGS="-Wl,--enable-new-dtags ${MATH_LDFLAGS} ${SCALAPACK_LDFLAGS} ${cray_ldflags}" \
@@ -119,7 +119,7 @@ case "$with_elpa" in
                               FC=${MPIFC} \
                               CC=${MPICC} \
                               CXX=${MPICXX} \
-                              FCFLAGS="${FCFLAGS} ${MATH_CFLAGS} ${SCALAPACK_CFLAGS} -ffree-line-length-none ${AVX_flag} ${FMA_flag} ${SSE4_flag} ${AVX512_flags}" \
+                              FCFLAGS="${FCFLAGS} ${MATH_CFLAGS} ${SCALAPACK_CFLAGS} ${AVX_flag} ${FMA_flag} ${SSE4_flag} ${AVX512_flags}" \
                               CFLAGS="${CFLAGS} ${MATH_CFLAGS} ${SCALAPACK_CFLAGS} ${AVX_flag} ${FMA_flag} ${SSE4_flag} ${AVX512_flags}" \
                               CXXFLAGS="${CXXFLAGS} ${MATH_CFLAGS} ${SCALAPACK_CFLAGS} ${AVX_flag} ${FMA_flag} ${SSE4_flag} ${AVX512_flags}" \
                               LDFLAGS="-Wl,--enable-new-dtags ${MATH_LDFLAGS} ${SCALAPACK_LDFLAGS} ${cray_ldflags}" \
